@@ -30,7 +30,7 @@ pipeline {
             steps {
                 sh '''
                     echo "Running tests..."
-                    test -f build/index.htmkl && echo "Build successful!" || (echo "Build failed!" && exit 1)
+                    test -f build/index.html && echo "Build successful!" || (echo "Build failed!" && exit 1)
                     npm test 
                 '''
             }
