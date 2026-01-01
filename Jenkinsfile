@@ -20,5 +20,20 @@ pipeline {
                 '''
             }
         }
+        stage('Test') {
+            agent {
+                docker {
+                    image 'node:18-alpine'
+                    reuseNode true
+                }
+            }
+            steps {
+                sh '''
+                    echo "Running tests..."
+                    test -f build/index.htmkl && echo "Build successful!" || (echo "Build failed!" && exit 1)
+                    npm test 
+                '''
+            }
+        }
     }
 }
