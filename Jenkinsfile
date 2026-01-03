@@ -91,10 +91,6 @@ pipeline {
                 }
             }
 
-            environment {
-                CI_ENVIRONMENT_URL = 'https://magnificent-kelpie-0179f8.netlify.app'
-            }
-
             steps {
                 sh '''
                     netlify --version
@@ -122,7 +118,7 @@ pipeline {
             }
 
             environment {
-                CI_ENVIRONMENT_URL = 'YOUR NETLIFY SITE URL'
+                CI_ENVIRONMENT_URL = 'https://magnificent-kelpie-0179f8.netlify.app'
             }
 
             steps {
