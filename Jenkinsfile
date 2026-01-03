@@ -70,6 +70,8 @@ pipeline {
                             npm install serve
                             node_modules/.bin/serve -s build &
                             sleep 10
+                            echo "Waiting for server to be ready..."
+                            timeout 60 bash -c 'until curl -f http://localhost:3000 > /dev/null 2>&1; do sleep 1; done' || echo "Warning: Server check timed out"
                             npx playwright test  --reporter=html
                         '''
                     }
