@@ -37,7 +37,7 @@ pipeline {
                 docker {
                     image 'amazon/aws-cli'
                     reuseNode true
-                    args "--entrypoint=''"
+                    args "-u root --entrypoint=''"
                 }
             }
             environment {
@@ -48,9 +48,11 @@ pipeline {
                     // some block
                     sh '''
                         aws --version
+                        yum install jq -y
                         aws s3 sync build s3://$AWS_S3_BUCKET/ 
-                        aws ecs register-task-definition --cli-input-json file://aws/task-definition.json
-                        aws ecs update-service --cluster LearnJenkinsApp-Cluster-Prod --service LearnJenkinsApp-TaskDefinition-Prod-service-ret9fvno  --task-definition LearnJenkinsApp-TaskDefinition-Prod:2
+                        LATEST_TD_REVISION=$(aws ecs register-task-definition --cli-input-json file://aws/task-definition.json | jq '.taskDefinition.revision')
+                        echo "Latest Task Definition Revision: $LATEST_TD_REVISION"
+                        aws ecs update-service --cluster LearnJenkinsApp-Cluster-Prod --service LearnJenkinsApp-TaskDefinition-Prod-service-ret9fvno  --task-definition LearnJenkinsApp-TaskDefinition-Prod:$LATEST_TD_REVISION
 
                     '''
                 }
