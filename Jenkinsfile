@@ -49,7 +49,8 @@ pipeline {
                     sh '''
                         aws --version
                         aws s3 sync build s3://$AWS_S3_BUCKET/ 
-                        aws ecs register-task-definition --cli-input-json file://aws/task-definition.json 
+                        aws ecs register-task-definition --cli-input-json file://aws/task-definition.json
+                        aws ecs update-service --cluster LearnJenkinsApp-Cluster-Prod --service LearnJenkinsApp-TaskDefinition-Prod-service-ret9fvno  --task-definition LearnJenkinsApp-TaskDefinition-Prod:2
 
                     '''
                 }
