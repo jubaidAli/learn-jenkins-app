@@ -41,12 +41,17 @@ pipeline {
                 docker {
                     image 'amazon/aws-cli'
                     reuseNode true
-                    args "-u root -v /var/run/docker.sock:/var/run/docker.sock -v /usr/bin/docker:/usr/bin/docker --entrypoint=''"
+                    args "-u root -v /var/run/docker.sock:/var/run/docker.sock --entrypoint=''"
                 }
             }
 
             steps {
                 sh '''
+                    yum install -y tar gzip
+                    curl -fsSL https://download.docker.com/linux/static/stable/x86_64/docker-24.0.7.tgz -o docker.tgz
+                    tar -xzf docker.tgz
+                    mv docker/docker /usr/local/bin/
+                    rm -rf docker docker.tgz
                     docker build -t myjenkinsapp .
                 '''
             }
